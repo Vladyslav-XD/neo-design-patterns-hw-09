@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 import { DataExporter } from './DataExporter';
 
 export class JsonExporter extends DataExporter {
@@ -7,6 +8,13 @@ export class JsonExporter extends DataExporter {
     }
 
     protected save(): void {
-        fs.writeFileSync('./dist/users.json', this.result);
+        const outputPath = './dist/users.json';
+        const dir = path.dirname(outputPath);
+
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+        }
+
+        fs.writeFileSync(outputPath, this.result);
     }
 }
